@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/mnt/c/Users/rrade/dev/API-Security/tren"
+set -gx VIRTUAL_ENV "/mnt/c/Users/rrade/dev/API-Testing/tren"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

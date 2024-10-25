@@ -4,6 +4,9 @@ from extensions import db
 
 def save_customer():
     data = request.get_json()
+    if not data or not all(k in data for k in ('customer_id', 'customer_name', 'customer_email', 'customer_phone')):
+        return jsonify({"message": "Invalid input"}), 400
+    
     new_customer = Customer(
         customer_id=data['customer_id'], 
         customer_name=data['customer_name'],
@@ -14,28 +17,15 @@ def save_customer():
     db.session.commit()
     return jsonify({"message": "Customer saved"}), 201
 
-def get_customer():
-   
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
 
-   
-    customers = Customer.query.paginate(page=page, per_page=per_page, error_out=False)
+def get_customer(customer_id):
+    customer = Customer.query.get(customer_id)
+    if customer is None:
+        return jsonify({"message": "Customer not found"}), 404
 
-    
-    response = { 
-        'customers': [
-            {
-                'customer_id': customer.customer_id, 
-                'customer_name': customer.customer_name,  
-                'customer_email': customer.customer_email,  
-                'customer_phone': customer.customer_phone   
-            } for customer in customers.items 
-        ],
-        'total': customers.total,        
-        'pages': customers.pages,         
-        'current_page': customers.page   
-    }
-    
-    
-    return jsonify(response), 200
+    return jsonify({
+        'customer_id': customer.customer_id,
+        'customer_name': customer.customer_name,
+        'customer_email': customer.customer_email,
+        'customer_phone': customer.customer_phone
+    }), 200
