@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Employee(db.Model):
-    __tablename__ = 'employees'
+    __tablename__ = 'employee'
     employee_id = db.Column(db.Integer, primary_key=True)
     employee_name = db.Column(db.String(100), nullable=False)
     employee_position = db.Column(db.String(100), nullable=False)

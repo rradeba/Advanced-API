@@ -13,23 +13,18 @@ def save_employee():
     db.session.commit()
     return jsonify({"message": "Employee saved"}), 201
 
-def get_employee():
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
+def get_employee(employee_id):
+   
+    employee = Employee.query.get(employee_id)
 
-    employees = Employee.query.paginate(page=page, per_page=per_page, error_out=False)
+    
+    if employee is None:
+        return jsonify({"message": "Employee not found"}), 404
 
-    response = { 
-        'employees': [
-            {
-                'employee_id': employee.employee_id,  
-                'employee_name': employee.employee_name,  
-                'employee_position': employee.employee_position  
-            } for employee in employees.items  
-        ],
-        'total': employees.total,       
-        'pages': employees.pages,        
-        'current_page': employees.page   
+    response = {
+        'employee_id': employee.employee_id,
+        'employee_name': employee.employee_name,
+        'employee_position': employee.employee_position
     }
-  
+
     return jsonify(response), 200

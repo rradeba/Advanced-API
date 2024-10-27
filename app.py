@@ -2,7 +2,9 @@ from flask import Flask
 from extensions import db, ma, limiter
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash
-from config import config  
+from config import config 
+from flask_jwt_extended import JWTManager
+
 
 from Models.customer import Customer
 from Models.user import User
@@ -16,9 +18,10 @@ from Routes.userBP import user_blueprint
 
 def create_app(config_name):
     app = Flask(__name__)
-    
-   
-    app.config.from_object(config[config_name])
+    if config_name == 'testing':
+        app.config.from_object('config.TestingConfig')
+    elif config_name == 'development':
+        app.config.from_object('config.DevelopmentConfig')
     
  
     db.init_app(app)
@@ -29,7 +32,7 @@ def create_app(config_name):
    
     app.register_blueprint(order_blueprint, url_prefix='/orders')
     app.register_blueprint(customer_blueprint, url_prefix='/customer')
-    app.register_blueprint(employee_blueprint, url_prefix='/employees')
+    app.register_blueprint(employee_blueprint, url_prefix='/employee')
     app.register_blueprint(product_blueprint, url_prefix='/products')
     app.register_blueprint(production_blueprint, url_prefix='/productions')
     app.register_blueprint(user_blueprint, url_prefix='/user')
