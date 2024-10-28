@@ -5,6 +5,9 @@ from extensions import db
 def save_product():
    
     data = request.get_json()
+    if not data or not all(k in data for k in ('product_id', 'product_name','product_price')):
+        return jsonify({"message": "Invalid input"}), 400
+    
     new_product = Product(
         product_id=data['product_id'],
         product_name=data['product_name'],
@@ -14,26 +17,20 @@ def save_product():
     db.session.commit()
     return jsonify({"message": "Product saved"}), 201
 
-def get_product():
+def get_product(product_id):
     
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
-
-    products = Product.query.paginate(page=page, per_page=per_page, error_out=False)
+    product = Product.query.get(product_id)
+    if product is None:
+        return jsonify({"message": "Product not found"}), 404
 
    
     response = {
-        'products': [
-            {
+
+            
                 'product_id': product.product_id, 
                 'product_name': product.product_name,  
                 'product_price': product.product_price 
-            } for product in products.items
-        ],
-        'total': products.total,          
-        'pages': products.pages,         
-        'current_page': products.page     
-    }
-    
+            
+        }
     
     return jsonify(response), 200

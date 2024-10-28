@@ -4,6 +4,9 @@ from extensions import db
 
 def save_employee():
     data = request.get_json()
+    if not data or not all(k in data for k in ('employee_id', 'employee_name', 'employee_position')):
+        return jsonify({"message": "Invalid input"}), 400
+    
     new_employee = Employee(
         employee_id=data['employee_id'],
         employee_name=data['employee_name'],

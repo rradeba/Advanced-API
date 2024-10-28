@@ -7,11 +7,8 @@ from decorator import role_required
 customer_blueprint = Blueprint('customer', __name__)
 limiter = Limiter(key_func=get_remote_address)
 
-@customer_blueprint.route('/', methods=['POST'])
-@limiter.limit("5 per minute")
- 
-def copy_customer():
-    return save_customer()
+customer_blueprint.route('/', methods=['POST'])(save_customer)
+@limiter.limit("5 per minute") 
 
 @customer_blueprint.route('/<int:customer_id>', methods=['GET'])
 @limiter.limit("10 per minute")

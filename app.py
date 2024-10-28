@@ -30,11 +30,11 @@ def create_app(config_name):
     CORS(app)
 
    
-    app.register_blueprint(order_blueprint, url_prefix='/orders')
+    app.register_blueprint(order_blueprint, url_prefix='/order')
     app.register_blueprint(customer_blueprint, url_prefix='/customer')
     app.register_blueprint(employee_blueprint, url_prefix='/employee')
-    app.register_blueprint(product_blueprint, url_prefix='/products')
-    app.register_blueprint(production_blueprint, url_prefix='/productions')
+    app.register_blueprint(product_blueprint, url_prefix='/product')
+    app.register_blueprint(production_blueprint, url_prefix='/production')
     app.register_blueprint(user_blueprint, url_prefix='/user')
 
     return app
