@@ -2,19 +2,20 @@ from flask import Flask
 from extensions import db, ma, limiter
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash
-from config import config 
 from flask_jwt_extended import JWTManager
+from caching import cache
 
 
 from Models.customer import Customer
-from Models.user import User
+from Models.customerAccount import CustomerAccount 
 
 from Routes.orderBP import order_blueprint
 from Routes.customerBP import customer_blueprint
+from Routes.customerAccountBP import customer_account_blueprint
 from Routes.productBP import product_blueprint
-from Routes.productionBP import production_blueprint
-from Routes.employeeBP import employee_blueprint
-from Routes.userBP import user_blueprint
+from Routes.loginBP import login_blueprint 
+
+
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -23,19 +24,24 @@ def create_app(config_name):
     elif config_name == 'development':
         app.config.from_object('config.DevelopmentConfig')
     
+    jwt = JWTManager(app)
  
     db.init_app(app)
     ma.init_app(app)
     limiter.init_app(app)
     CORS(app)
 
-   
+    app.config['CACHE_TYPE'] = 'simple'
+    app.config['CACHE_DEFAULT_TIMEOUT'] = 300
+
+    cache.init_app(app)
+
     app.register_blueprint(order_blueprint, url_prefix='/order')
     app.register_blueprint(customer_blueprint, url_prefix='/customer')
-    app.register_blueprint(employee_blueprint, url_prefix='/employee')
+    app.register_blueprint(customer_account_blueprint, url_prefix='/customer_account')
     app.register_blueprint(product_blueprint, url_prefix='/product')
-    app.register_blueprint(production_blueprint, url_prefix='/production')
-    app.register_blueprint(user_blueprint, url_prefix='/user')
+    app.register_blueprint(login_blueprint, url_prefix='/login')
+    
 
     return app
 
@@ -48,9 +54,9 @@ def init_customers_info_data(app):
             ]
 
             customerAccounts = [
-                User(user_username="ex1", user_password=generate_password_hash("password1")),
-                User(user_username="ex2", user_password=generate_password_hash("password2")),
-                User(user_username="ex3", user_password=generate_password_hash("password3")),
+                CustomerAccount(custmer_username="ex1", customer_password=generate_password_hash("password1")),
+                CustomerAccount(customer_username="ex2", customer_password=generate_password_hash("password2")),
+                CustomerAccount(customer_username="ex3", customer_password=generate_password_hash("password3")),
             ]
 
             db.session.add_all(customers)

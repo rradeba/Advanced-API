@@ -1,10 +1,15 @@
+from datetime import timedelta
+
+
 class Config:
     SECRET_KEY = 'key'  
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
     
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'  
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db' 
+    
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -20,3 +25,6 @@ config = {
     'production': ProductionConfig,
     'testing': TestingConfig
 }
+
+
+

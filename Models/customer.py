@@ -8,6 +8,7 @@ class Customer(db.Model):
     customer_name = db.Column(db.String(100), nullable=False)
     customer_email = db.Column(db.String(100), nullable=False, unique=True)
     customer_phone = db.Column(db.String(20), nullable=False)
+    customer_role = db.Column(db.String(100), nullable=False)
 
 
 
@@ -16,7 +17,8 @@ class Customer(db.Model):
             'customer_id': self.customer_id,
             'customer_name': self.customer_name,
             'customer_email': self.customer_email,
-            'customer_phone': self.customer_phone
+            'customer_phone': self.customer_phone,
+            'customer_role' : self.customer_role
         }
     
 

@@ -1,19 +1,18 @@
 from functools import wraps
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from Models import user
 
-def role_required(required_roles):
-    def wrapper(fn):
+def role_required(required_role):
+    def decorator(fn):
         @wraps(fn)
-        @jwt_required()
-        def decorated(*args, **kwargs):
-            current_user_id = get_jwt_identity()  
-            user = user.query.get(current_user_id)  
-            
-            if user is None or user.role not in required_roles:
-                return jsonify({'message': 'Access denied. You do not have the required permissions.'}), 403
-            
+        @jwt_required() 
+        def wrapper(*args, **kwargs):
+            current_user = get_jwt_identity()
+            user_roles = current_user.get('roles', '')
+
+            if required_role not in user_roles:
+                return jsonify({"message": "Permission denied"}), 403
+
             return fn(*args, **kwargs)
-        return decorated
-    return wrapper
+        return wrapper
+    return decorator

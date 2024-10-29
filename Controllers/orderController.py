@@ -1,8 +1,5 @@
 from flask import jsonify, request
 from Models.order import Order
-from Models.order import Order
-from Models.order import Order
-from Models.order import Order
 from extensions import db
 
 def save_order():
@@ -26,17 +23,9 @@ def get_order(order_id):
 
    
     response = {
-        'order': [
-            {
-                'id': order.order_id,
-                'quantity': order.quantity,
-                'total_price': order.total_price
-            } for order in order.items
-        ],
-        'total': order.total,          
-        'pages': order.pages,         
-        'current_page': order.page    
+        'order_id': order.order_id,
+        'quantity': order.order_quantity,
+        'total_price': order.total_price
     }
-    
     
     return jsonify(response), 200
