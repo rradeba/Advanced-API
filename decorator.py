@@ -2,6 +2,7 @@ from functools import wraps
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+
 def role_required(required_role):
     def decorator(fn):
         @wraps(fn)

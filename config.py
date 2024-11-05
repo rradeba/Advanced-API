@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os 
 
 
 class Config:
@@ -8,12 +9,12 @@ class Config:
     
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db' 
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') 
     
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://user:password@localhost/prod_db'  
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') 
 
 class TestingConfig(Config):
     TESTING = True

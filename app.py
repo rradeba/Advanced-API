@@ -4,36 +4,41 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import JWTManager
 from caching import cache
-
+from flask_migrate import Migrate
+import os
+from config import config
+from flask_sqlalchemy import SQLAlchemy
 
 from Models.customer import Customer
-from Models.customerAccount import CustomerAccount 
+from Models.customerAccount import CustomerAccount
 
 from Routes.orderBP import order_blueprint
 from Routes.customerBP import customer_blueprint
 from Routes.customerAccountBP import customer_account_blueprint
 from Routes.productBP import product_blueprint
-from Routes.loginBP import login_blueprint 
+from Routes.loginBP import login_blueprint
 
+db = SQLAlchemy()
+migrate = Migrate()
 
-
-def create_app(config_name):
+def create_app(config):
     app = Flask(__name__)
-    if config_name == 'testing':
-        app.config.from_object('config.TestingConfig')
-    elif config_name == 'development':
-        app.config.from_object('config.DevelopmentConfig')
     
-    jwt = JWTManager(app)
- 
+    if config == 'testing':
+        app.config.from_object('config.TestingConfig')
+    elif config == 'development':
+        app.config.from_object('config.DevelopmentConfig')
+
     db.init_app(app)
     ma.init_app(app)
     limiter.init_app(app)
+    migrate.init_app(app, db)
+    jwt = JWTManager(app)
     CORS(app)
 
+    
     app.config['CACHE_TYPE'] = 'simple'
     app.config['CACHE_DEFAULT_TIMEOUT'] = 300
-
     cache.init_app(app)
 
     app.register_blueprint(order_blueprint, url_prefix='/order')
@@ -42,7 +47,6 @@ def create_app(config_name):
     app.register_blueprint(product_blueprint, url_prefix='/product')
     app.register_blueprint(login_blueprint, url_prefix='/login')
     
-
     return app
 
 def init_customers_info_data(app):
@@ -53,14 +57,14 @@ def init_customers_info_data(app):
                 Customer(customer_name="Customer Two", customer_email="customer2@email.com", customer_phone="1122334455"),
             ]
 
-            customerAccounts = [
-                CustomerAccount(custmer_username="ex1", customer_password=generate_password_hash("password1")),
+            customer_accounts = [
+                CustomerAccount(customer_username="ex1", customer_password=generate_password_hash("password1")),
                 CustomerAccount(customer_username="ex2", customer_password=generate_password_hash("password2")),
                 CustomerAccount(customer_username="ex3", customer_password=generate_password_hash("password3")),
             ]
 
             db.session.add_all(customers)
-            db.session.add_all(customerAccounts)
+            db.session.add_all(customer_accounts)
             db.session.commit()
             print("Customer data initialized successfully.")
         except Exception as e:
@@ -68,7 +72,7 @@ def init_customers_info_data(app):
             print(f"Error initializing customer data: {e}")
 
 if __name__ == '__main__':
-    app = create_app('development')  
+    app = create_app('development')
     
     with app.app_context():
         db.create_all()
