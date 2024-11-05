@@ -4,7 +4,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import JWTManager
 from caching import cache
-from flask_migrate import Migrate
+
 import os
 from config import config
 from flask_sqlalchemy import SQLAlchemy
@@ -19,7 +19,7 @@ from Routes.productBP import product_blueprint
 from Routes.loginBP import login_blueprint
 
 db = SQLAlchemy()
-migrate = Migrate()
+
 
 def create_app(config):
     app = Flask(__name__)
@@ -32,7 +32,7 @@ def create_app(config):
     db.init_app(app)
     ma.init_app(app)
     limiter.init_app(app)
-    migrate.init_app(app, db)
+   
     jwt = JWTManager(app)
     CORS(app)
 
