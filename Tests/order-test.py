@@ -4,8 +4,6 @@ from app import create_app
 from flask import jsonify
 from extensions import db 
 
-
-
 class TestOrder(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')  
@@ -25,24 +23,20 @@ class TestOrder(unittest.TestCase):
 
     @mock.patch('Controllers.orderController.save_order')  
     def test_create_order(self, mock_save_order):
+        mock_save_order.return_value = jsonify({"message": "Order saved"}), 201
         response = self.client.post('/order/', json={
             'order_id': 1,
             'order_quantity': 2,
             'total_price': 10.10
         })
         
-        print(mock_save_order)
-        print(response.get_json())
-        print("Response JSON:", response.get_json())
-        print("Mock was called:", mock_save_order.called)
-        print("Mock call args:", mock_save_order.call_args)
-        
         self.assertEqual(response.status_code, 201)
-        self.assertIn('Order saved', response.get_data(as_text=True))
+        self.assertEqual(response.get_json(), {"message": "Order saved"})
+        self.assertTrue(mock_save_order.called)
 
     def test_create_order_invalid_input(self):
         response = self.client.post('/order/', json={
-            'order_quantity': 3  
+            'order_quantity': 3  # Missing required fields
         })
         self.assertEqual(response.status_code, 400)
         self.assertIn('Invalid input', response.get_data(as_text=True))
@@ -51,7 +45,8 @@ class TestOrder(unittest.TestCase):
     def test_get_order_not_found(self, mock_get_order):
         mock_get_order.return_value = jsonify({"message": "Order not found"}), 404
         response = self.client.get('/order/999')
-        self.assertIn('Order not found', response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.get_json(), {"message": "Order not found"})
 
 if __name__ == '__main__':
     unittest.main()

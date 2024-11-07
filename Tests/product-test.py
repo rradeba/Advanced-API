@@ -3,8 +3,6 @@ from unittest import mock
 from app import create_app  
 from flask import jsonify
 from extensions import db 
-from Controllers.productController import save_product, get_product
-
 
 class TestProduct(unittest.TestCase):
     def setUp(self):
@@ -25,24 +23,20 @@ class TestProduct(unittest.TestCase):
 
     @mock.patch('Controllers.productController.save_product')  
     def test_create_product(self, mock_save_product):
+        mock_save_product.return_value = jsonify({"message": "Product saved"}), 201
         response = self.client.post('/product/', json={
             'product_id': 1,
             'product_name': 'Widget',
             'product_price': 3.27
         })
         
-        print(mock_save_product)
-        print(response.get_json())
-        print("Response JSON:", response.get_json())
-        print("Mock was called:", mock_save_product.called)
-        print("Mock call args:", mock_save_product.call_args)
-        
         self.assertEqual(response.status_code, 201)
-        self.assertIn('Product saved', response.get_data(as_text=True))
+        self.assertEqual(response.get_json(), {"message": "Product saved"})
+        self.assertTrue(mock_save_product.called)
 
     def test_create_product_invalid_input(self):
         response = self.client.post('/product/', json={
-            'product_price': 2.27
+            'product_price': 2.27  # Missing product_name, which is required
         })
         self.assertEqual(response.status_code, 400)
         self.assertIn('Invalid input', response.get_data(as_text=True))
@@ -51,7 +45,8 @@ class TestProduct(unittest.TestCase):
     def test_get_product_not_found(self, mock_get_product):
         mock_get_product.return_value = jsonify({"message": "Product not found"}), 404
         response = self.client.get('/product/999')
-        self.assertIn('Product not found', response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.get_json(), {"message": "Product not found"})
 
 if __name__ == '__main__':
     unittest.main()
