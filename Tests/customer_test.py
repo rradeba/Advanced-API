@@ -24,7 +24,7 @@ class TestCustomer(unittest.TestCase):
 
     @mock.patch('Controllers.customerController.save_customer')
     def test_create_customer(self, mock_save_customer):
-        # Mock the save_customer function response
+        
         mock_save_customer.return_value = jsonify({"message": "Customer saved"}), 201
 
         response = self.client.post('/customer/', json={
