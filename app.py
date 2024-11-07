@@ -72,7 +72,7 @@ def init_customers_info_data(app):
             print(f"Error initializing customer data: {e}")
 
 if __name__ == '__main__':
-    app = create_app('development')
+    app = create_app('testing')
     
     with app.app_context():
         db.create_all()
