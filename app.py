@@ -40,11 +40,11 @@ def create_app(config):
     app.config['CACHE_DEFAULT_TIMEOUT'] = 300
     cache.init_app(app)
 
-    app.register_blueprint(order_blueprint, url_prefix='/order/')
-    app.register_blueprint(customer_blueprint, url_prefix='/customer/')
-    app.register_blueprint(customer_account_blueprint, url_prefix='/customer_account/')
-    app.register_blueprint(product_blueprint, url_prefix='/product/')
-    app.register_blueprint(login_blueprint, url_prefix='/login/')
+    app.register_blueprint(order_blueprint, url_prefix='/order')
+    app.register_blueprint(customer_blueprint, url_prefix='/customer')
+    app.register_blueprint(customer_account_blueprint, url_prefix='/customer_account')
+    app.register_blueprint(product_blueprint, url_prefix='/product')
+    app.register_blueprint(login_blueprint, url_prefix='/login')
     
     return app
 
