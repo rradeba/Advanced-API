@@ -18,7 +18,6 @@ from Routes.customerAccountBP import customer_account_blueprint
 from Routes.productBP import product_blueprint
 from Routes.loginBP import login_blueprint
 
-db = SQLAlchemy()
 
 
 def create_app(config):
