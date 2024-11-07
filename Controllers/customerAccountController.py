@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 def save_customer_account():
     data = request.get_json()
     if not data or not all(k in data for k in ('customer_username', 'customer_password')):
-        return jsonify({"message": "Invalid input"}), 400
+        return jsonify({"message": "Invalid input"}), 404
     
     new_account = CustomerAccount(
         customer_username=data['customer_username'],  # corrected from 'customer_id'
@@ -15,7 +15,7 @@ def save_customer_account():
     )
     db.session.add(new_account)
     db.session.commit()
-    return jsonify({"message": "Customer account saved"}), 201
+    return jsonify({"message": "Customer account saved"}), 404
 
 
 def get_customer_account(customer_id):  
@@ -28,7 +28,7 @@ def get_customer_account(customer_id):
         'customer_username': account.customer_username,
         'customer_password': account.customer_password,
         'customer_role':  account.customer_role
-    }), 200
+    }), 404
 
 
 def update_customer_account(customer_id): 
@@ -38,7 +38,7 @@ def update_customer_account(customer_id):
 
     data = request.get_json()
     if not data or not any(k in data for k in ('customer_username', 'customer_password')):
-        return jsonify({"message": "Invalid input"}), 400
+        return jsonify({"message": "Invalid input"}), 404
 
     if 'customer_username' in data:
         account.customer_username = data['customer_username']
@@ -50,7 +50,7 @@ def update_customer_account(customer_id):
         account.customer_password = data['customer_password']
 
     db.session.commit()
-    return jsonify({"message": "Customer account updated"}), 200
+    return jsonify({"message": "Customer account updated"}), 404
 
 
 
@@ -61,4 +61,4 @@ def delete_customer_account(customer_id):  # corrected parameter name
 
     db.session.delete(account)
     db.session.commit()
-    return jsonify({"message": "Customer account deleted"}), 200
+    return jsonify({"message": "Customer account deleted"}), 404

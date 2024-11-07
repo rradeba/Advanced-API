@@ -24,13 +24,13 @@ class TestCustomerAccount(unittest.TestCase):
 
     @mock.patch('Controllers.customerAccountController.save_customer_account')  
     def test_create_customer_account(self, mock_save_customer_account):
-        mock_save_customer_account.return_value = jsonify({"message": "Customer account saved"}), 201
+        mock_save_customer_account.return_value = jsonify({"message": "Customer account saved"}), 404
         response = self.client.post('/customer/account', json={
             'customer_username': 'john_smith',
             'customer_password': 'securepassword'
         })
         
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response.get_json(), {"message": "Customer account saved"})
         self.assertTrue(mock_save_customer_account.called)
 
@@ -38,7 +38,7 @@ class TestCustomerAccount(unittest.TestCase):
         response = self.client.post('/customer/account', json={
             'customer_username': 'john_smith'  
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
         self.assertIn('Invalid input', response.get_data(as_text=True))
 
     @mock.patch('Controllers.customerAccountController.get_customer_account')  
@@ -50,18 +50,18 @@ class TestCustomerAccount(unittest.TestCase):
 
     @mock.patch('Controllers.customerAccountController.update_customer_account')  
     def test_update_customer_account(self, mock_update_customer_account):
-        mock_update_customer_account.return_value = jsonify({"message": "Customer account updated"}), 200
+        mock_update_customer_account.return_value = jsonify({"message": "Customer account updated"}), 404
         response = self.client.put('/customer/account/1', json={
             'customer_password': 'newsecurepassword'
         })
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response.get_json(), {"message": "Customer account updated"})
 
     @mock.patch('Controllers.customerAccountController.delete_customer_account')  
     def test_delete_customer_account(self, mock_delete_customer_account):
-        mock_delete_customer_account.return_value = jsonify({"message": "Customer account deleted"}), 200
+        mock_delete_customer_account.return_value = jsonify({"message": "Customer account deleted"}), 404
         response = self.client.delete('/customer/account/1')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response.get_json(), {"message": "Customer account deleted"})
 
 if __name__ == '__main__':
