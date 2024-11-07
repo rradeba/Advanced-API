@@ -28,10 +28,10 @@ jobs:
 
       - name: Run unit tests
         run: |
-          python -m unittest discover -s tests/customer_test -p "customer_test.py"
-          python -m unittest discover -s tests/custmomerAccount_test -p "customerAccount_test.py"
-          python -m unittest discover -s tests/order-test -p "order_test.py"
-          python -m unittest discover -s tests/product-test -p "product_test.py"
+          python -m unittest discover -s Tests/customer_test -p "customer_test.py"
+          python -m unittest discover -s Tests/custmomerAccount_test -p "customerAccount_test.py"
+          python -m unittest discover -s Tests/order-test -p "order_test.py"
+          python -m unittest discover -s Tests/product-test -p "product_test.py"
 
   deploy:
     runs-on: ubuntu-latest
