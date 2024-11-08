@@ -8,19 +8,15 @@ from flask_jwt_extended import jwt_required
 from caching import cache 
 
 
-customer_blueprint = Blueprint('customer', __name__, url_prefix = '/customer')
+customer_blueprint = Blueprint('customer', __name__)
 limiter = Limiter(key_func=get_remote_address)
 
-customer_blueprint.route('/', methods=['POST'])
-@jwt_required()
-@role_required('admin')
+@customer_blueprint.route('/', methods=['POST'])
 @limiter.limit("5 per minute")
 def save_customer_route():
     return save_customer()
 
 @customer_blueprint.route('/get/<int:customer_id>', methods=['GET'])
-@jwt_required()
-@role_required('admin')
 @limiter.limit("10 per minute")
 @cache.cached()
 def pull_customer(customer_id):
