@@ -52,14 +52,14 @@ def init_customers_info_data(app):
     with app.app_context():
         try:
             customers = [
-                Customer(customer_name="Customer One", customer_email="customer1@email.com", customer_phone="1234567890"),
-                Customer(customer_name="Customer Two", customer_email="customer2@email.com", customer_phone="1122334455"),
+                Customer(customer_name="Customer One", customer_email="customer1@email.com", customer_phone="1234567890", customer_role = "admin"),
+                Customer(customer_name="Customer Two", customer_email="customer2@email.com", customer_phone="1122334455", customer_role = "admin"),
             ]
 
             customer_accounts = [
-                CustomerAccount(customer_username="ex1", customer_password=generate_password_hash("password1")),
-                CustomerAccount(customer_username="ex2", customer_password=generate_password_hash("password2")),
-                CustomerAccount(customer_username="ex3", customer_password=generate_password_hash("password3")),
+                CustomerAccount(customer_username="ex1", customer_password=generate_password_hash("password1"), customer_role = "admin"),
+                CustomerAccount(customer_username="ex2", customer_password=generate_password_hash("password2"), customer_role = "admin"),
+                CustomerAccount(customer_username="ex3", customer_password=generate_password_hash("password3"), customer_role = "admin"),
             ]
 
             db.session.add_all(customers)

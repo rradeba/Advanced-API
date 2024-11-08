@@ -1,23 +1,25 @@
-
 from extensions import db
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 class CustomerAccount(db.Model):
     __tablename__ = 'customerAccount'
 
-    customer_id = db.Column(db.String, primary_key=True)
-    customer_username = db.Column(db.String(100), nullable=False)
-    customer_password = db.Column(db.String(100), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)  
+    customer_id = db.Column(db.String, ForeignKey("Customer.customer_id"))
+    customer_username = db.Column(db.String(100), unique=True, nullable=False)
+    customer_password = db.Column(db.String(128), nullable=False)
     customer_role = db.Column(db.String(100), nullable=False)
-    
 
+    customer = relationship("Customer", back_populates="accounts")
 
     def to_dict(self):
         return {
             'customer_id': self.customer_id,
             'customer_username': self.customer_username,
-            'customer_password': self.customer_password,
             'customer_role': self.customer_role
         }
-    
 
+
+    
     
