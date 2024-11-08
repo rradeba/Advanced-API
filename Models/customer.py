@@ -1,13 +1,14 @@
 from extensions import db
+from sqlalchemy.orm import relationship
 
 class Customer(db.Model):
     __tablename__ = 'Customer'
 
     customer_id = db.Column(db.Integer, primary_key=True)
-    customer_name = db.Column(db.String(100), nullable=False)
-    customer_email = db.Column(db.String(100), nullable=False, unique=True)
-    customer_phone = db.Column(db.String(20), nullable=False)
-    customer_role = db.Column(db.String(100), nullable=False)
+    customer_name = db.Column(db.String(255), nullable=False)
+    customer_email = db.Column(db.String(255), nullable=False)
+    customer_phone = db.Column(db.String(255), nullable=False)
+    customer_role = db.Column(db.String(255), nullable=False)
 
 
 
@@ -20,5 +21,6 @@ class Customer(db.Model):
             'customer_role' : self.customer_role
         }
     
+ 
 
     

@@ -24,6 +24,9 @@ class TestCustomer(unittest.TestCase):
             db.drop_all()
         self.app_context.pop()
 
+
+        
+
     @mock.patch('Controllers.customerController.save_customer')
     def test_create_customer(self, mock_save_customer):
         mock_save_customer.return_value = jsonify({"message": "Customer saved"}), 201
