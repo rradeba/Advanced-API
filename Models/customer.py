@@ -1,7 +1,7 @@
 from extensions import db
 
 class Customer(db.Model):
-    __tablename__ = 'customer'
+    __tablename__ = 'Customer'
 
     customer_id = db.Column(db.Integer, primary_key=True)
     customer_name = db.Column(db.String(100), nullable=False)
