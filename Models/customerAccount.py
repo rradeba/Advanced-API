@@ -6,7 +6,7 @@ class CustomerAccount(db.Model):
     __tablename__ = 'customerAccount'
 
     id = db.Column(db.Integer, primary_key=True)  
-    customer_id = db.Column(db.String, ForeignKey("Customer.customer_id"))
+    customer_id = db.Column(db.Integer, ForeignKey("Customer.customer_id"))
     customer_username = db.Column(db.String(100), unique=True, nullable=False)
     customer_password = db.Column(db.String(128), nullable=False)
     customer_role = db.Column(db.String(100), nullable=False)
