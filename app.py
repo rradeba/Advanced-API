@@ -59,7 +59,7 @@ def init_customers_info_data(app):
             ]
             db.session.add_all(customers)
             db.session.commit() 
-            print("Deez")
+            
 
             CustomerAccount.query.delete()
             db.session.commit()

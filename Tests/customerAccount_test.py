@@ -28,7 +28,7 @@ class TestCustomerAccount(unittest.TestCase):
         response = self.client.post('/customer/account', json={
             'customer_username': 'john_smith',
             'customer_password': 'securepassword'
-            
+
         })
         
         self.assertEqual(response.status_code, 201)
@@ -37,7 +37,7 @@ class TestCustomerAccount(unittest.TestCase):
 
     def test_create_customer_account_invalid_input(self):
         response = self.client.post('/customer/account', json={
-            'customer_username': 'john_smith'  # Missing password field
+            'customer_username': 'john_smith'  
         })
         self.assertEqual(response.status_code, 400)
         self.assertIn('Invalid input', response.get_data(as_text=True))
