@@ -54,8 +54,8 @@ def update_customer_account(customer_id):
 
 
 
-def delete_customer_account(customer_id):  # corrected parameter name
-    account = CustomerAccount.query.filter_by(customer_id=customer_id).first()  # fixed to use customer_id
+def delete_customer_account(customer_id):  
+    account = CustomerAccount.query.filter_by(customer_id=customer_id).first()  
     if account is None:
         return jsonify({"message": "Customer account not found"}), 404
 

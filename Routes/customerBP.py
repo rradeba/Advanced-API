@@ -8,7 +8,7 @@ from flask_jwt_extended import jwt_required
 from caching import cache 
 
 
-customer_blueprint = Blueprint('customer', __name__)
+customer_blueprint = Blueprint('customer', __name__, url_prefix = '/customer')
 limiter = Limiter(key_func=get_remote_address)
 
 customer_blueprint.route('/', methods=['POST'])
