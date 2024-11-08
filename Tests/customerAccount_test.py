@@ -28,6 +28,7 @@ class TestCustomerAccount(unittest.TestCase):
         response = self.client.post('/customer/account', json={
             'customer_username': 'john_smith',
             'customer_password': 'securepassword'
+            
         })
         
         self.assertEqual(response.status_code, 201)

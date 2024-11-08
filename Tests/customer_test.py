@@ -6,8 +6,7 @@ from extensions import db
 from Controllers.customerController import save_customer, get_customer
 
 class TestCustomer(unittest.TestCase):
-    save_customer = save_customer 
-    get_customer= get_customer
+    
 
     def setUp(self):
         self.app = create_app('testing')
@@ -33,7 +32,9 @@ class TestCustomer(unittest.TestCase):
             'customer_id': 1,
             'customer_name': 'John Smith',
             'customer_email': 'john_smith@email.com',
-            'customer_phone': '1234567890'
+            'customer_phone': '1234567890',
+            'customer_role': 'admin',
+
         })
 
         self.assertEqual(response.status_code, 201)
@@ -45,7 +46,7 @@ class TestCustomer(unittest.TestCase):
             'customer_name': 'John Smith'  
         })
         self.assertEqual(response.status_code, 400)
-        self.assertIn('Invalid input', response.save_customer(as_text=True))
+        self.assertIn('Invalid input', response.save_data(as_text=True))
 
     @mock.patch('Controllers.customerController.get_customer')
     def test_get_customer_not_found(self, mock_get_customer):
@@ -55,7 +56,7 @@ class TestCustomer(unittest.TestCase):
         
         self.assertEqual(response.status_code, 404)
         
-        self.assertIn('Customer not found', response.get_customer(as_text=True))
+        self.assertIn('Customer not found', response.get_json(as_text=True))
 
 if __name__ == '__main__':
     unittest.main()
