@@ -36,7 +36,7 @@ class TestCustomerAccount(unittest.TestCase):
         self.assertTrue(mock_save_customer_account.called)
 
     def test_create_customer_account_invalid_input(self):
-        response = self.client.post('/customer_account', json={
+        response = self.client.post('/customer_account/get/1', json={
             'customer_username': 'john_smith'  
         })
         self.assertEqual(response.status_code, 400)
@@ -52,7 +52,7 @@ class TestCustomerAccount(unittest.TestCase):
     @mock.patch('Controllers.customerAccountController.update_customer_account')  
     def test_update_customer_account(self, mock_update_customer_account):
         mock_update_customer_account.return_value = jsonify({"message": "Customer account updated"}), 200
-        response = self.client.put('/customer_account/1', json={
+        response = self.client.put('/customer_account/put/1', json={
             'customer_password': 'newsecurepassword'
         })
         self.assertEqual(response.status_code, 200)
@@ -61,7 +61,7 @@ class TestCustomerAccount(unittest.TestCase):
     @mock.patch('Controllers.customerAccountController.delete_customer_account')  
     def test_delete_customer_account(self, mock_delete_customer_account):
         mock_delete_customer_account.return_value = jsonify({"message": "Customer account deleted"}), 200
-        response = self.client.delete('/customer_account/1')
+        response = self.client.delete('/customer_account/delete/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), {"message": "Customer account deleted"})
 

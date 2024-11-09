@@ -49,7 +49,7 @@ class TestCustomer(unittest.TestCase):
     @mock.patch('Controllers.customerController.get_customer')
     def test_get_customer_not_found(self, mock_get_customer):
         mock_get_customer.return_value = jsonify({"message": "Customer not found"}), 404
-        response = self.client.get('/customer/999')
+        response = self.client.get('/customer/get/999')
         
         self.assertEqual(response.status_code, 404)
         self.assertIn('Customer not found', response.get_data(as_text=True))
