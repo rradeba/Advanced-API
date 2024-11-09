@@ -9,7 +9,7 @@ def save_customer_account():
         return jsonify({"message": "Invalid input"}), 400
     
     new_account = CustomerAccount(
-        customer_username=data['customer_username'],  # corrected from 'customer_id'
+        customer_username=data['customer_username'],  
         customer_password = generate_password_hash(data['customer_password']),
         customer_role=data['customer_role']
     )
